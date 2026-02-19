@@ -1,8 +1,9 @@
-import Link from 'next/link'
-import { getProjects } from '@/lib/getProjects'
+import { getProjectsByCategory } from '@/lib/getProjects'
+import ProjectImage from './_components/ProjectImage'
 
 export default function HomePage() {
-  const projects = getProjects()
+  const grouped = getProjectsByCategory()
+  const categories = Object.keys(grouped)
 
   return (
     <div>
@@ -13,49 +14,57 @@ export default function HomePage() {
         </p>
       </div>
 
-      {projects.length === 0 ? (
+      {categories.length === 0 ? (
         <div className="text-center py-24 text-text-muted">
           <p className="text-lg">No projects found.</p>
           <p className="text-sm mt-1">
-            Add a folder with a <code className="text-accent">project.json</code> to{' '}
-            <code className="text-accent">projects/</code> to get started.
+            Add an entry to{' '}
+            <code className="text-accent">data/projects.json</code> to get
+            started.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <Link
-              key={project.slug}
-              href={`/projects/${project.slug}`}
-              className="group block rounded-xl overflow-hidden border border-border bg-surface hover:border-accent/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
-            >
-              {/* Thumbnail */}
-              <div className="aspect-video bg-background overflow-hidden">
-                {project.thumbnailExt ? (
-                  <img
-                    src={`/api/thumbnail/${project.slug}`}
-                    alt={`${project.name} thumbnail`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-text-muted text-sm">No thumbnail</span>
-                  </div>
-                )}
-              </div>
+        <div className="space-y-12">
+          {categories.map((category) => (
+            <section key={category}>
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-text-muted mb-4">
+                {category}
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {grouped[category].map((project) => (
+                  <a
+                    key={project.subdomain}
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block rounded-xl overflow-hidden border border-border bg-surface hover:border-accent/50 transition-all duration-200 hover:shadow-lg hover:shadow-accent/5 hover:-translate-y-0.5"
+                  >
+                    {/* Image */}
+                    <div className="aspect-video bg-background overflow-hidden">
+                      <ProjectImage
+                        src={project.image}
+                        alt={`${project.name} thumbnail`}
+                      />
+                    </div>
 
-              {/* Card body */}
-              <div className="p-4">
-                <h2 className="font-semibold text-text-primary group-hover:text-accent transition-colors">
-                  {project.name}
-                </h2>
-                {project.description && (
-                  <p className="mt-1 text-sm text-text-muted line-clamp-2">
-                    {project.description}
-                  </p>
-                )}
+                    {/* Card body */}
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold text-text-primary group-hover:text-accent transition-colors">
+                        {project.name}
+                      </h3>
+                      {project.description && (
+                        <p className="mt-1 text-sm text-text-muted line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
+                      <p className="mt-3 text-xs text-accent/70 font-medium">
+                        {project.subdomain}.wanderingparker.com ↗
+                      </p>
+                    </div>
+                  </a>
+                ))}
               </div>
-            </Link>
+            </section>
           ))}
         </div>
       )}

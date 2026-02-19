@@ -10,7 +10,10 @@
       "Bash(powershell -Command \"Remove-Item ''C:\\\\Code\\\\WanderingParker\\\\next.config.ts''\")",
       "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Code\\\\WanderingParker'' -Name\")",
       "Bash(npm run dev:*)",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(git submodule:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)"
     ]
   }
 }
