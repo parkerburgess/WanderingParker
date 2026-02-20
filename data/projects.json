@@ -12,5 +12,12 @@
     "category": "Outdoors",
     "image": "/images/fly-fishing.png",
     "subdomain": "fly-fishing-tracking"
+  },
+  {
+    "name": "Patan",
+    "description": "A personalized version of Catan.",
+    "category": "Board Games",
+    "image": "/images/patan.png",
+    "subdomain": "patan"
   }
 ]
